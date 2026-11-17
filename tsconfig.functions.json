@@ -1,0 +1,34 @@
+{
+  // Typecheck for the Edge Function only.
+  //
+  // The app's tsconfig.json excludes functions/ and dev/ so that server code can
+  // never be pulled into the browser bundle. That exclusion also left the whole
+  // directory unchecked, and Deno is not installed here, so `deno check` could
+  // not fill the gap. This config closes it without changing what ships.
+  //
+  //   npm run check:functions
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    // Functions import each other as "./handler.ts", which is Deno's convention.
+    "allowImportingTsExtensions": true,
+    // functions/cloud-agents.mjs is plain JS and is imported by three modules.
+    // Included so those imports resolve; checkJs stays off because the file is a
+    // vendored client rather than code written against this project's types.
+    "allowJs": true,
+    "checkJs": false,
+    "noEmit": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "isolatedModules": true,
+    "resolveJsonModule": true,
+    // Empty on purpose — no @types/node. The Function runs on Deno, so reaching
+    // for a Node-only global (process, Buffer, require) should be an error here
+    // rather than something that compiles locally and dies at the edge.
+    "types": []
+  },
+  "include": ["functions/**/*.ts", "functions/**/*.mjs", "dev/deno.d.ts"]
+}

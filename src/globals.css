@@ -1,0 +1,271 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "../vendor/shadcn-tailwind-4.13.0.css";
+
+@utility scrollbar-thin {
+  scrollbar-width: thin;
+}
+
+@utility scrollbar-none {
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@utility scrollbar-gutter-stable {
+  scrollbar-gutter: stable;
+}
+
+/* ------------------------------------------------------------------
+   Marginalia — visual thesis: "the feel of annotations in a margin".
+
+   The product must not read as a default dashboard with a chat box.
+   It should read as a book that has been seriously read: warm paper,
+   ink-black type, and ONE saturated colour reserved exclusively for
+   user-owned content, so that "this is mine" is legible at a glance.
+
+   Dark mode is intentionally not provided (see docs/规划书 §5). A
+   prefers-color-scheme override would fracture the paper identity.
+   ------------------------------------------------------------------ */
+
+:root {
+  /* Paper and ink */
+  --background: #fbf7ef;
+  --foreground: #1c1917;
+
+  --card: #fffdf8;
+  --card-foreground: #1c1917;
+  --popover: #fffdf8;
+  --popover-foreground: #1c1917;
+
+  /* Cinnabar: reserved for USER content only — highlights, annotations,
+     the reader's own notes. Never used for chrome or system output. */
+  --primary: #c8442a;
+  --primary-foreground: #fffaf5;
+
+  --secondary: #f1e9da;
+  --secondary-foreground: #3f3a34;
+  --muted: #f3ece0;
+  --muted-foreground: #78716c;
+  --accent: #efe5d3;
+  --accent-foreground: #292524;
+
+  /* Indigo: reserved for SYSTEM output — discourse labels, formula
+     readings, AI explanations. Keeps "theirs" vs "mine" separable. */
+  --chart-1: #2f4858;
+  --chart-2: #6b7f8f;
+  --chart-3: #a8b5bf;
+  --chart-4: #c8442a;
+  --chart-5: #8a9aa6;
+
+  --destructive: #a32712;
+  --border: #e2d8c6;
+  --input: #ded2bd;
+  --ring: #c8442a;
+  --radius: 0.375rem;
+
+  --sidebar: #f6f0e4;
+  --sidebar-foreground: #1c1917;
+  --sidebar-primary: #c8442a;
+  --sidebar-primary-foreground: #fffaf5;
+  --sidebar-accent: #ece2d0;
+  --sidebar-accent-foreground: #292524;
+  --sidebar-border: #e2d8c6;
+  --sidebar-ring: #c8442a;
+
+  /* Semantic aliases used directly by the reader */
+  --paper: #fffdf8;
+  --paper-rule: #e8dfcd;
+  --ink: #1c1917;
+  --ink-soft: #57534e;
+  --cinnabar: #c8442a;
+  --cinnabar-wash: #c8442a1a;
+  --indigo: #2f4858;
+  --indigo-wash: #2f485814;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  --color-paper: var(--paper);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-cinnabar: var(--cinnabar);
+  --color-indigo: var(--indigo);
+
+  --radius-sm: calc(var(--radius) - 2px);
+  --radius-md: var(--radius);
+  --radius-lg: calc(var(--radius) + 2px);
+  --radius-xl: calc(var(--radius) + 6px);
+
+  /* Serif for the paper itself; sans for interface chrome only. */
+  --font-serif: Georgia, "Iowan Old Style", "Palatino Linotype", "Times New Roman",
+    "Source Han Serif SC", "Noto Serif CJK SC", "Songti SC", SimSun, serif;
+  --font-sans: system-ui, -apple-system, "Segoe UI", "PingFang SC",
+    "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    "Liberation Mono", "Courier New", monospace;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* --- Paper surface ------------------------------------------------ */
+
+.paper-surface {
+  background-color: var(--paper);
+  background-image: linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--paper-rule) 45%, transparent) 1px,
+    transparent 1px
+  );
+  background-size: 100% 2rem;
+  box-shadow:
+    0 1px 2px rgb(28 25 23 / 0.05),
+    0 12px 32px -12px rgb(28 25 23 / 0.16);
+}
+
+/* --- Selectable passage ------------------------------------------- */
+
+.passage {
+  font-family: var(--font-serif);
+  line-height: 2rem;
+  cursor: text;
+}
+
+.passage-zh {
+  font-family: var(--font-serif);
+  line-height: 1.9rem;
+}
+
+/* User-owned highlight. Cinnabar wash, deliberately imperfect edges
+   so it reads as a marker stroke rather than a UI selection. */
+.mark-mine {
+  background: var(--cinnabar-wash);
+  box-shadow: inset 0 -0.5em 0 var(--cinnabar-wash);
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.mark-mine[data-active="true"] {
+  background: color-mix(in srgb, var(--cinnabar) 26%, transparent);
+  box-shadow: inset 0 -0.5em 0 color-mix(in srgb, var(--cinnabar) 26%, transparent);
+}
+
+/* --- Margin annotation card --------------------------------------- */
+
+.annotation-card {
+  position: relative;
+  background: var(--paper);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--cinnabar);
+  box-shadow: 0 6px 20px -10px rgb(28 25 23 / 0.3);
+}
+
+/* Slight rotation on hover only — a nod to a hand-placed note, without
+   making resting text harder to read. */
+.annotation-card {
+  transition: transform 160ms ease, box-shadow 160ms ease;
+}
+.annotation-card:hover {
+  transform: rotate(-0.25deg) translateY(-1px);
+  box-shadow: 0 10px 26px -10px rgb(28 25 23 / 0.36);
+}
+
+/* --- System output (theirs, not mine) ------------------------------ */
+
+.system-note {
+  border-left: 3px solid var(--indigo);
+  background: var(--indigo-wash);
+}
+
+/* --- Reading spine ------------------------------------------------- */
+
+.spine-node {
+  transition: transform 160ms ease, background-color 160ms ease;
+}
+.spine-node[data-current="true"] {
+  transform: scale(1.5);
+}
+
+/* --- Discourse role chip ------------------------------------------- */
+
+.role-chip {
+  font-family: var(--font-sans);
+  letter-spacing: 0.02em;
+}
+
+/* --- Floating selection toolbar ------------------------------------ */
+
+.select-toolbar {
+  animation: toolbar-in 120ms ease-out;
+}
+
+@keyframes toolbar-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 4px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0) scale(1);
+  }
+}
+
+/* --- Reduced motion ------------------------------------------------ */
+
+@media (prefers-reduced-motion: reduce) {
+  .annotation-card,
+  .annotation-card:hover,
+  .spine-node,
+  .select-toolbar {
+    transition: none;
+    animation: none;
+    transform: none;
+  }
+}
+
+/* --- Focus visibility ---------------------------------------------- */
+
+:where(button, a, input, textarea, select, [tabindex]):focus-visible {
+  outline: 2px solid var(--cinnabar);
+  outline-offset: 2px;
+  border-radius: 2px;
+}

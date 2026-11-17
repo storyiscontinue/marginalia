@@ -1,0 +1,16 @@
+node_modules/
+dist/
+.env
+.env.*
+!.env.example
+.DS_Store
+*.tsbuildinfo
+.qoder-sites/
+.qoder-sites.json
+
+# Qoder Sites 的本机绑定记录：内含 project/site/action/deployment 标识，属于部署侧状态，不是源码。
+*.qoder.site
+
+# 论文 PDF 有版权，且体积 21 MB。测试用它们当真实版面夹具，但仓库里不放文件；
+# 用 `node dev/fetch-samples.mjs` 自己取回，取回的清单和用途见 dev/samples/README.md。
+dev/samples/*.pdf
