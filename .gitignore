@@ -14,3 +14,7 @@ dist/
 # 论文 PDF 有版权，且体积 21 MB。测试用它们当真实版面夹具，但仓库里不放文件；
 # 用 `node dev/fetch-samples.mjs` 自己取回，取回的清单和用途见 dev/samples/README.md。
 dev/samples/*.pdf
+
+# 参赛帖截图凭证：由 `node dev/shots.mjs` 对线上站点真实操作生成，含论文正文摘录，
+# 与 PDF 同一口径不进仓库；要复现就重跑脚本。
+docs/shots/
